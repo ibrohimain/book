@@ -1,83 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Jizzax Viewer</title>
-    <style>
-        body {
-            margin: 0;
-            background-color: #fff;
-            font-family: sans-serif;
-        }
-
-        .lang-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 0.5rem;
-            padding: 1rem 0.5rem;
-            background: #007ab3;
-            flex-wrap: wrap;
-        }
-
-        .lang-buttons button {
-            flex: 1;
-            min-width: 100px;
-            padding: 0.5rem;
-            font-size: 1rem;
-            border: none;
-            border-radius: 5px;
-            background-color: #ffffff;
-            color: #007ab3;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .pdf-viewer {
-            padding: 0.5rem;
-        }
-
-        iframe {
-            width: 100%;
-            height: 85vh;
-            border: none;
-        }
-
-        @media (max-width: 400px) {
-            .lang-buttons {
-                gap: 0.3rem;
-                padding: 0.5rem;
-            }
-
-            .lang-buttons button {
-                font-size: 0.9rem;
-                padding: 0.4rem;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Jizzax Viewer</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: sans-serif;
+      background-color: #fff;
+      overflow: hidden;
+    }
+    .lang-buttons {
+      display: flex;
+      justify-content: space-around;
+      padding: 0.5rem;
+      background: #007ab3;
+    }
+    .lang-buttons button {
+      flex: 1;
+      margin: 0 0.3rem;
+      padding: 0.6rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 4px;
+      background-color: white;
+      color: #007ab3;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .pdf-viewer {
+      height: calc(100% - 60px);
+      width: 100%;
+    }
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    @supports (-webkit-touch-callout: none) {
+      iframe {
+        transform: translate3d(0, 0, 0);
+        will-change: transform;
+      }
+    }
+  </style>
 </head>
-
 <body>
-    <div class="lang-buttons">
-        <button onclick="showPDF('uzb')">Oʻzbek</button>
-        <button onclick="showPDF('rus')">Русский</button>
-        <button onclick="showPDF('eng')">English</button>
-    </div>
-    <div class="pdf-viewer">
-        <iframe id="pdfFrame" src="/mnt/jizzax_albom_uzb.pdf"></iframe>
-    </div>
-    <script>
-        const pdfMap = {
-            uzb: '/mnt/jizzax_albom_uzb.pdf',
-            rus: '/mnt/jizzax_albom_rus.pdf',
-            eng: '/mnt/jizzax_albom_eng.pdf',
-        };
-
-        function showPDF(lang) {
-            document.getElementById('pdfFrame').src = pdfMap[lang];
-        }
-    </script>
+  <div class="lang-buttons">
+    <button onclick="showPDF('uzb')">Oʻzbek</button>
+    <button onclick="showPDF('rus')">Русский</button>
+    <button onclick="showPDF('eng')">English</button>
+  </div>
+  <div class="pdf-viewer">
+    <iframe id="pdfFrame" src="/mnt/jizzax_albom_eng.pdf" allowfullscreen></iframe>
+  </div>
+  <script>
+    const pdfMap = {
+      uzb: '/mnt/jizzax_albom_eng.pdf',
+      rus: '/mnt/jizzax_albom_eng.pdf',
+      eng: '/mnt/jizzax_albom_eng.pdf',
+    };
+    function showPDF(lang) {
+      const frame = document.getElementById('pdfFrame');
+      frame.src = pdfMap[lang];
+    }
+  </script>
 </body>
-
 </html>
