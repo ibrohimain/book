@@ -4,76 +4,69 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Jizzax Booklet Viewer</title>
+    <title>Jizzax Viewer</title>
     <style>
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-        }
-
-        header {
-            background-color: #006699;
-            color: white;
-            padding: 1rem;
-            text-align: center;
+            background-color: #fff;
+            font-family: sans-serif;
         }
 
         .lang-buttons {
             display: flex;
             justify-content: center;
-            gap: 1rem;
-            padding: 1rem;
+            gap: 0.5rem;
+            padding: 1rem 0.5rem;
+            background: #007ab3;
             flex-wrap: wrap;
         }
 
         .lang-buttons button {
-            padding: 0.6rem 1.2rem;
+            flex: 1;
+            min-width: 100px;
+            padding: 0.5rem;
             font-size: 1rem;
             border: none;
-            border-radius: 6px;
-            background-color: #007ab3;
-            color: white;
+            border-radius: 5px;
+            background-color: #ffffff;
+            color: #007ab3;
+            font-weight: bold;
             cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .lang-buttons button:hover {
-            background-color: #005f87;
         }
 
         .pdf-viewer {
-            width: 100%;
-            max-width: 400px;
-            margin: auto;
-            padding: 1rem;
+            padding: 0.5rem;
         }
 
         iframe {
             width: 100%;
-            height: 600px;
+            height: 85vh;
             border: none;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        @media (max-width: 400px) {
+            .lang-buttons {
+                gap: 0.3rem;
+                padding: 0.5rem;
+            }
+
+            .lang-buttons button {
+                font-size: 0.9rem;
+                padding: 0.4rem;
+            }
         }
     </style>
 </head>
 
 <body>
-    <header>
-        <h1>Jizzax - Moʻjizalar Oʻlkasi</h1>
-    </header>
-
     <div class="lang-buttons">
         <button onclick="showPDF('uzb')">Oʻzbek</button>
         <button onclick="showPDF('rus')">Русский</button>
         <button onclick="showPDF('eng')">English</button>
     </div>
-
     <div class="pdf-viewer">
         <iframe id="pdfFrame" src="/mnt/jizzax_albom_uzb.pdf"></iframe>
     </div>
-
     <script>
         const pdfMap = {
             uzb: '/mnt/jizzax_albom_uzb.pdf',
