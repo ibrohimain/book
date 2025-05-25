@@ -1,72 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Jizzax Viewer</title>
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      font-family: sans-serif;
-      background-color: #fff;
-      overflow: hidden;
-    }
-    .lang-buttons {
-      display: flex;
-      justify-content: space-around;
-      padding: 0.5rem;
-      background: #007ab3;
-    }
-    .lang-buttons button {
-      flex: 1;
-      margin: 0 0.3rem;
-      padding: 0.6rem;
-      font-size: 1rem;
-      border: none;
-      border-radius: 4px;
-      background-color: white;
-      color: #007ab3;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    .pdf-viewer {
-      height: calc(100% - 60px);
-      width: 100%;
-    }
-    iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-    @supports (-webkit-touch-callout: none) {
-      iframe {
-        transform: translate3d(0, 0, 0);
-        will-change: transform;
-      }
-    }
-  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jizzax PDF Viewer</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: sans-serif;
+            background: #f2f2f2;
+        }
+
+        .lang-buttons {
+            display: flex;
+            justify-content: space-around;
+            background-color: #007ab3;
+            padding: 0.5rem;
+        }
+
+        .lang-buttons button {
+            flex: 1;
+            margin: 0 0.2rem;
+            padding: 0.6rem;
+            font-size: 1rem;
+            background: white;
+            color: #007ab3;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #pdfContainer {
+            padding: 1rem 0.5rem;
+        }
+
+        canvas {
+            width: 100%;
+            height: auto;
+            margin-bottom: 1rem;
+            background: white;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+        }
+    </style>
 </head>
+
 <body>
-  <div class="lang-buttons">
-    <button onclick="showPDF('uzb')">Oʻzbek</button>
-    <button onclick="showPDF('rus')">Русский</button>
-    <button onclick="showPDF('eng')">English</button>
-  </div>
-  <div class="pdf-viewer">
-    <iframe id="pdfFrame" src="/mnt/jizzax_albom_eng.pdf" allowfullscreen></iframe>
-  </div>
-  <script>
-    const pdfMap = {
-      uzb: '/mnt/jizzax_albom_eng.pdf',
-      rus: '/mnt/jizzax_albom_eng.pdf',
-      eng: '/mnt/jizzax_albom_eng.pdf',
-    };
-    function showPDF(lang) {
-      const frame = document.getElementById('pdfFrame');
-      frame.src = pdfMap[lang];
-    }
-  </script>
+    <div class="lang-buttons">
+        <button onclick="loadPDF('uzb')">Oʻzbek</button>
+        <button onclick="loadPDF('rus')">Русский</button>
+        <button onclick="loadPDF('eng')">English</button>
+    </div>
+    <div id="pdfContainer"></div>
+
+    <script>
+        const pdfMap = {
+            uzb: '/mnt/jizzax_albom_eng.pdf',
+            rus: '/mnt/jizzax_albom_eng.pdf',
+            eng: '/mnt/jizzax_albom_eng.pdf'
+        };
+
+        async function loadPDF(lang) {
+            const url = pdfMap[lang];
+            const container = document.getElementById('pdfContainer');
+            container.innerHTML = '';
+            const loadingTask = pdfjsLib.getDocument(url);
+            const pdf = await loadingTask.promise;
+
+            for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                const page = await pdf.getPage(pageNum);
+                const canvas = document.createElement('canvas');
+                const context = canvas.getContext('2d');
+                const viewport = page.getViewport({ scale: 1.5 });
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+
+                await page.render({ canvasContext: context, viewport }).promise;
+                container.appendChild(canvas);
+            }
+        }
+
+        // Load default PDF
+        loadPDF('uzb');
+    </script>
 </body>
+
 </html>
